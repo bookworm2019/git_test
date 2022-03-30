@@ -5,10 +5,16 @@ pymysql.install_as_MySQLdb()
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from flask_session import Session
-from config import Config
 from config import config
 import logging
 import logging.handlers
+# 导入生成 csrf_token 值的函数
+from flask_wtf.csrf import generate_csrf
+# 调用函数生成 csrf_token
+from info.utils.common import do_index_class
+
+
+
 
 # 数据库
 db = SQLAlchemy()
@@ -27,8 +33,15 @@ def create_app(config_name):
     global redis_store
     redis_store = redis.StrictRedis(host=config[config_name].REDIS_HOST, port=config[config_name].REDIS_PORT)
     # 开启csrf保护
-    CSRFProtect(app)
+    csrf = CSRFProtect(app)
     # 设置session保存位置
+    @app.after_request
+    def after_request(response):
+        csrf_token = generate_csrf()
+        response.set_cookie('csrf_token', csrf_token)
+        return response
+
+    app.add_template_filter(do_index_class, "index_class")
     Session(app)
 
     from info.modules.index import index_blu

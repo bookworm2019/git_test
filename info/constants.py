@@ -1,8 +1,8 @@
 # 图片验证码Redis有效期， 单位：秒
-IMAGE_CODE_REDIS_EXPIRES = 300
+IMAGE_CODE_REDIS_EXPIRES = 3000
 
 # 短信验证码Redis有效期，单位：秒
-SMS_CODE_REDIS_EXPIRES = 300
+SMS_CODE_REDIS_EXPIRES = 3000
 
 # 七牛空间域名
 QINIU_DOMIN_PREFIX = "http://oz6itywx9.bkt.clouddn.com/"
